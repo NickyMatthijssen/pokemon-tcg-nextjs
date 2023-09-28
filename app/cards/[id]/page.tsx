@@ -32,8 +32,8 @@ export default async function CardPage({ params: { id } }: any) {
 
   return (
     <div className="container py-16 max-w-5xl">
-      <section className="flex space-x-12 w-full">
-        <div className="flex-1">
+      <section className="flex flex-col md:flex-row md:space-x-12 w-full">
+        <div className="flex-1 mb-8 md:mb-0">
           <div className="mb-8">
             <div className="flex items-center space-x-4 mb-3">
               <BackButton />
@@ -110,16 +110,18 @@ export default async function CardPage({ params: { id } }: any) {
         </div>
 
         <div className="flex-shrink-0">
-          <Image
-            src={card.images.large}
-            width={356}
-            height={496}
-            alt={card.name}
-          />
+          <div className="w-[356px] mx-auto">
+            <Image
+              src={card.images.large}
+              width={356}
+              height={496}
+              alt={card.name}
+            />
 
-          <p className="text-right text-xs text-neutral-400 mt-1">
-            Artist: {card.artist}
-          </p>
+            <p className="text-right text-xs text-neutral-400 mt-1">
+              Artist: {card.artist}
+            </p>
+          </div>
         </div>
       </section>
 

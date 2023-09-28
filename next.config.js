@@ -4,13 +4,13 @@ const nextConfig = {
     serverActions: true,
   },
   images: {
-    unoptimized: true,
     remotePatterns: [
       {
         protocol: "https",
         hostname: "images.pokemontcg.io",
       },
     ],
+    formats: ["image/webp"],
   },
 };
 

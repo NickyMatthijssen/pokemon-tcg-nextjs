@@ -9,8 +9,8 @@ type Props = {
 
 export default function Set({ set, index }: Props) {
   return (
-    <div className="flex space-x-6 mt-12 w-full">
-      <div className="flex-shrink-0 mt-4">
+    <div className="flex md:space-x-6 flex-col md:flex-row mt-12 w-full">
+      <div className="flex-shrink-0 mt-4 mx-auto md:mx-0">
         <Link href={`/?set.id=${set.id}`}>
           <Image src={set.images.logo} alt={set.name} width={160} height={53} />
         </Link>

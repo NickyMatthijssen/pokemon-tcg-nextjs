@@ -1,4 +1,5 @@
 import { Suspense } from "react";
+import { Sidebar, SidebarProvider, SidebarToggle } from "~/components";
 import Filters from "~/components/Filters";
 import PokemonCardGrid from "~/components/PokemonCardGrid";
 import PokemonCardGridSkeleton from "~/components/PokemonCardGridSkeleton";
@@ -21,21 +22,29 @@ export default async function Home({ searchParams }: Props) {
   });
 
   return (
-    <div className="container py-16">
-      <div className="grid grid-cols-12 gap-12">
-        <div className="col-span-2">
-          {/** @ts-ignore */}
-          <Filters query={searchParams} />
-        </div>
-        <div className="col-span-10">
-          <h1 className="mb-8">Cards</h1>
+    <SidebarProvider>
+      <div className="container py-16">
+        <div className="grid md:grid-cols-12 gap-12">
+          <div className="md:col-span-4 lg:col-span-3 xl:col-span-2">
+            <Sidebar>
+              {/** @ts-ignore */}
+              <Filters query={searchParams} />
+            </Sidebar>
+          </div>
+          <div className="md:col-span-8 lg:col-span-9 xl:col-span-10">
+            <div>
+              <h1 className="mb-8">Cards</h1>
 
-          <Suspense fallback={<PokemonCardGridSkeleton />}>
-            {/** @ts-ignore */}
-            <PokemonCardGrid promise={promise} />
-          </Suspense>
+              <SidebarToggle />
+            </div>
+
+            <Suspense fallback={<PokemonCardGridSkeleton />}>
+              {/** @ts-ignore */}
+              <PokemonCardGrid promise={promise} />
+            </Suspense>
+          </div>
         </div>
       </div>
-    </div>
+    </SidebarProvider>
   );
 }
