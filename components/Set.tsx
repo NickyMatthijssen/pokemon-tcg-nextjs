@@ -30,7 +30,7 @@ export default function Set({ set, index }: Props) {
             <tr>
               <th>Total</th>
               <td>
-                {index && `${index} /`} {set.total}
+                {index && `${index} /`} {set.printedTotal}
               </td>
             </tr>
             <tr>

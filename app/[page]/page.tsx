@@ -7,13 +7,23 @@ import api from "~/lib/api";
 import { IParams, Query } from "~/lib/interfaces";
 
 export const revalidate = 3600;
+export const fetchCache = "force-cache";
 
 type Props = {
-  searchParams: Query & Pick<IParams, "page">;
+  params: Pick<IParams, "page">;
+  searchParams: Query;
 };
 
-export default async function Home({ searchParams }: Props) {
-  const { page = 1, ...q } = searchParams;
+export function generateMetadata({ params: { page = 1 } }: Props) {
+  return {
+    title: `Overview - page ${page}`,
+    description: `Overview of pokémon tcg cards on page ${page}.`,
+  };
+}
+
+export default async function Home({ params, searchParams }: Props) {
+  const { page = 1 } = params;
+  const { ...q } = searchParams;
 
   const promise = api.getAllCards({
     pageSize: 12,
@@ -27,8 +37,10 @@ export default async function Home({ searchParams }: Props) {
         <div className="grid md:grid-cols-12 gap-12">
           <div className="md:col-span-4 lg:col-span-3 xl:col-span-2">
             <Sidebar>
-              {/** @ts-ignore */}
-              <Filters query={searchParams} />
+              <Suspense fallback={<div>Loading</div>}>
+                {/** @ts-ignore */}
+                <Filters query={searchParams} />
+              </Suspense>
             </Sidebar>
           </div>
           <div className="md:col-span-8 lg:col-span-9 xl:col-span-10">

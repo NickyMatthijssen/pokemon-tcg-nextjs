@@ -36,7 +36,7 @@ export interface ICard {
   resistances?: IEffectiveness[];
   retreatCost?: Type[];
   set: ISet;
-  number: string;
+  number: number;
   artist: string;
   rarity: string;
   flavorText: string;

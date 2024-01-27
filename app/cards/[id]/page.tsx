@@ -9,7 +9,10 @@ import Effectivenesses from "~/components/Effectivenesses";
 import EnergyList from "~/components/EnergyList";
 import Set from "~/components/Set";
 import api from "~/lib/api";
-import { IAbility } from "~/lib/interfaces";
+import { IAbility, ICard } from "~/lib/interfaces";
+
+export const revalidate = 3600;
+export const fetchCache = "force-cache";
 
 export async function generateMetadata({
   params,
@@ -24,11 +27,26 @@ export async function generateMetadata({
 
   return {
     title: card.name,
+    description: `${card.name} is card ${card.number} of ${card.set.printedTotal} released in the ${card.set.name}.`,
+    openGraph: {
+      images: [
+        {
+          url: card.images.small,
+        },
+      ],
+    },
   };
 }
 
-export default async function CardPage({ params: { id } }: any) {
-  const card = await api.getCardById(id);
+export default async function CardPage({
+  params: { id },
+}: {
+  params: { id: string };
+}) {
+  // A small throttle to prevent flashing.
+  const card = await new Promise<ICard>((resolve) =>
+    setTimeout(() => resolve(api.getCardById(id)), 200)
+  );
 
   return (
     <div className="container py-16 max-w-5xl">

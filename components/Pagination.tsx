@@ -1,6 +1,5 @@
 "use client";
 
-import clsx from "clsx";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { PaginationLink } from "./PaginationLink";
@@ -37,13 +36,13 @@ export default function Pagination({
     <div className="flex items-center justify-between border-t border-neutral-700 mt-4 py-3">
       <div className="flex flex-1 justify-between sm:hidden">
         <Link
-          href={`${prefix}?page=${currentPage - 1}`}
+          href={`${prefix}${currentPage - 1}`}
           className="relative inline-flex items-center rounded-md border border-neutral-800 bg-indigo-800 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700"
         >
           Previous
         </Link>
         <Link
-          href={`${prefix}?page=${currentPage + 1}`}
+          href={`${prefix}${currentPage + 1}`}
           className="relative ml-3 inline-flex items-center rounded-md border border-neutral-800 bg-indigo-800 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700"
         >
           Next
@@ -77,7 +76,7 @@ export default function Pagination({
             aria-label="Pagination"
           >
             <PaginationLink
-              href={`${prefix}?page=${currentPage - 1}`}
+              href={`${prefix}${currentPage - 1}?${newParams.toString()}`}
               disabled={currentPage === 1}
               left
             >
@@ -89,9 +88,9 @@ export default function Pagination({
                 aria-hidden="true"
               >
                 <path
-                  fill-rule="evenodd"
+                  fillRule="evenodd"
                   d="M12.79 5.23a.75.75 0 01-.02 1.06L8.832 10l3.938 3.71a.75.75 0 11-1.04 1.08l-4.5-4.25a.75.75 0 010-1.08l4.5-4.25a.75.75 0 011.06.02z"
-                  clip-rule="evenodd"
+                  clipRule="evenodd"
                 />
               </svg>
             </PaginationLink>
@@ -99,7 +98,7 @@ export default function Pagination({
             {pages.map((page) => (
               <PaginationLink
                 key={page}
-                href={`${prefix}?page=${page}&${newParams.toString()}`}
+                href={`${prefix}${page}?${newParams.toString()}`}
                 active={page === currentPage}
               >
                 {page}
@@ -107,7 +106,7 @@ export default function Pagination({
             ))}
 
             <PaginationLink
-              href={`${prefix}?page=${currentPage + 1}`}
+              href={`${prefix}${currentPage + 1}?${newParams.toString()}`}
               disabled={currentPage === endPage}
               right
             >
@@ -120,9 +119,9 @@ export default function Pagination({
                 aria-hidden="true"
               >
                 <path
-                  fill-rule="evenodd"
+                  fillRule="evenodd"
                   d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z"
-                  clip-rule="evenodd"
+                  clipRule="evenodd"
                 />
               </svg>
             </PaginationLink>

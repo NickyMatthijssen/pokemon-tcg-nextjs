@@ -15,7 +15,7 @@ export default function PokemonCard({ card }: Props) {
   const [hideImage, setHideImage] = useState<boolean>(true);
 
   return (
-    <div className="mx-auto relative">
+    <div className="mx-auto relative mb-8">
       <div className="w-[294px] h-[412px] mx-auto">
         {hideImage && (
           <Skeleton

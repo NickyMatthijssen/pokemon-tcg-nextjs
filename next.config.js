@@ -1,8 +1,5 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  experimental: {
-    serverActions: true,
-  },
   images: {
     remotePatterns: [
       {
@@ -12,6 +9,13 @@ const nextConfig = {
     ],
     formats: ["image/webp"],
   },
+  redirects: async () => [
+    {
+      source: "/",
+      destination: "/1",
+      permanent: true,
+    },
+  ],
 };
 
 module.exports = nextConfig;
