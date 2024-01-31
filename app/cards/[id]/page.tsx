@@ -26,7 +26,7 @@ export async function generateMetadata({
   }
 
   return {
-    title: card.name,
+    title: `${card.name} - ${card.set.name}`,
     description: `${card.name} is card ${card.number} of ${card.set.printedTotal} released in the ${card.set.name}.`,
     openGraph: {
       images: [
