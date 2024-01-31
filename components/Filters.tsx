@@ -3,6 +3,7 @@ import Checkbox from "./Checkbox";
 import ExpansionList from "./ExpansionList";
 import api from "~/lib/api";
 import { Query } from "~/lib/interfaces";
+import Link from "next/link";
 
 export default async function Filters({ query }: { query: Query }) {
   const names = ["name", "types", "subtypes", "set.id", "supertype", "rarity"];
@@ -27,12 +28,7 @@ export default async function Filters({ query }: { query: Query }) {
       params.append(name, data.getAll(name).join(","));
     }
 
-    redirect(`/?${params.toString()}`);
-  }
-
-  async function resetFilters() {
-    "use server";
-    redirect("/");
+    redirect(`/1?${params.toString()}`);
   }
 
   const valueInQuery = (key: string, value: string) =>
@@ -40,15 +36,15 @@ export default async function Filters({ query }: { query: Query }) {
 
   return (
     <form action={filter}>
-      <h2>Filters</h2>
-
-      <input
-        name="name"
-        type="text"
-        className="form-control"
-        placeholder="Search..."
-        defaultValue={query.name}
-      />
+      <div className="border-b pb-6">
+        <input
+          name="name"
+          type="text"
+          className="form-control !mb-0"
+          placeholder="Search..."
+          defaultValue={query.name}
+        />
+      </div>
 
       <ExpansionList label="Types">
         {types.map((type) => (
@@ -110,11 +106,11 @@ export default async function Filters({ query }: { query: Query }) {
         ))}
       </ExpansionList>
 
-      <button className="button button--full">Search</button>
+      <button className="button button--full mt-6">Search</button>
 
-      <button className="text-neutral-400 text-xs" formAction={resetFilters}>
+      <Link href="/1" className="text-neutral-400 text-xs">
         Reset filters
-      </button>
+      </Link>
     </form>
   );
 }

@@ -1,7 +1,6 @@
 "use client";
 
-import clsx from "clsx";
-import React, { useMemo, useState } from "react";
+import React, { useState } from "react";
 
 type Props = React.PropsWithChildren & {
   label: string;
@@ -10,34 +9,55 @@ type Props = React.PropsWithChildren & {
 export default function ExpansionList({ label, children }: Props) {
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
 
-  const shownChildren = useMemo(
-    () =>
-      isExpanded ? children : React.Children.toArray(children).slice(0, 5),
-    [children, isExpanded]
-  );
-
   const toggle = () => setIsExpanded((isExpanded) => !isExpanded);
 
   return (
-    <div className="mb-4">
-      <label className="text-lg font-bold text-neutral-400" onClick={toggle}>
-        {label}
-      </label>
+    <div className="py-6 border-b">
+      <h2 className="-my-3 flow-root">
+        <button
+          onClick={toggle}
+          type="button"
+          className="flex w-full items-center justify-between py-3 text-sm"
+        >
+          <span className="font-medium">{label}</span>
 
-      <div
-        className={clsx("overflow-y-auto", {
-          "h-28": React.Children.toArray(children).length >= 4,
-        })}
-      >
-        {React.Children.toArray(children).map((child, index) => (
-          <div
-            key={index}
-            className={clsx(index >= 4 && !isExpanded && "hidden")}
-          >
-            {child}
+          <span className="ml-6 flex items-center">
+            {isExpanded ? (
+              <svg
+                className="h-5 w-5"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+                aria-hidden={isExpanded}
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M4 10a.75.75 0 01.75-.75h10.5a.75.75 0 010 1.5H4.75A.75.75 0 014 10z"
+                  clip-rule="evenodd"
+                ></path>
+              </svg>
+            ) : (
+              <svg
+                className="h-5 w-5"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+                aria-hidden={isExpanded}
+              >
+                <path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z"></path>
+              </svg>
+            )}
+          </span>
+        </button>
+      </h2>
+
+      {isExpanded && (
+        <div className="pt-6">
+          <div className="-m-1 p-1 mr-0 space-y-4 max-h-[200px] overflow-y-scroll overflow-x-visible">
+            {React.Children.toArray(children).map((child, index) => (
+              <React.Fragment key={index}>{child}</React.Fragment>
+            ))}
           </div>
-        ))}
-      </div>
+        </div>
+      )}
     </div>
   );
 }

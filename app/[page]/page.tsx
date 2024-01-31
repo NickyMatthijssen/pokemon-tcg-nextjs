@@ -34,7 +34,11 @@ export default async function Home({ params, searchParams }: Props) {
   return (
     <SidebarProvider>
       <div className="container py-16">
-        <div className="grid md:grid-cols-12 gap-12">
+        <div className="border-b mb-6 pt-24">
+          <h1 className="mb-8">Cards</h1>
+        </div>
+
+        <div className="grid md:grid-cols-12 gap-6">
           <div className="md:col-span-4 lg:col-span-3 xl:col-span-2">
             <Sidebar>
               <Suspense fallback={<div>Loading</div>}>
@@ -45,8 +49,6 @@ export default async function Home({ params, searchParams }: Props) {
           </div>
           <div className="md:col-span-8 lg:col-span-9 xl:col-span-10">
             <div>
-              <h1 className="mb-8">Cards</h1>
-
               <SidebarToggle />
             </div>
 
