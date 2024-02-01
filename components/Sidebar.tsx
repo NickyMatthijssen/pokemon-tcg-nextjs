@@ -26,7 +26,7 @@ export function Sidebar({ title, children }: SidebarProps) {
     <div
       className={clsx(
         "top-0 w-[312px] h-screen lg:relative lg:w-auto lg:h-auto z-10 bg-neutral-900 lg:bg-transparent -right-full lg:right-auto fixed lg:static transition-all lg:transition-none duration-600",
-        "pb-12 pt-4 lg:pt-0 lg:pb-0",
+        "pb-12 pt-4 lg:pt-0 lg:pb-0 overflow-auto",
         { "!right-0": isToggled }
       )}
     >

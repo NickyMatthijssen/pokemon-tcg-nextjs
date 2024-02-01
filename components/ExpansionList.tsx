@@ -1,5 +1,6 @@
 "use client";
 
+import clsx from "clsx";
 import React, { useState } from "react";
 
 type Props = React.PropsWithChildren & {
@@ -49,15 +50,13 @@ export default function ExpansionList({ label, children }: Props) {
         </button>
       </h3>
 
-      {isExpanded && (
-        <div className="pt-6">
-          <div className="-m-1 p-1 mr-0 space-y-4 max-h-[200px] overflow-y-scroll overflow-x-visible">
-            {React.Children.toArray(children).map((child, index) => (
-              <React.Fragment key={index}>{child}</React.Fragment>
-            ))}
-          </div>
+      <div className={clsx("pt-6", { hidden: !isExpanded })}>
+        <div className="-m-1 p-1 mr-0 space-y-4 max-h-[200px] overflow-y-scroll overflow-x-visible">
+          {React.Children.toArray(children).map((child, index) => (
+            <React.Fragment key={index}>{child}</React.Fragment>
+          ))}
         </div>
-      )}
+      </div>
     </div>
   );
 }
