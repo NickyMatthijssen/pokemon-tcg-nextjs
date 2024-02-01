@@ -11,7 +11,7 @@ export default async function PokemonCardGrid({
 
   return (
     <>
-      <div className="grid md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-x-4">
+      <div className="grid sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-x-4">
         {data.map((card: ICard) => (
           <PokemonCard card={card} key={card.id} />
         ))}

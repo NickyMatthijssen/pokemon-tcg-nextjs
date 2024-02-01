@@ -12,8 +12,8 @@ export default function ExpansionList({ label, children }: Props) {
   const toggle = () => setIsExpanded((isExpanded) => !isExpanded);
 
   return (
-    <div className="py-6 border-b">
-      <h2 className="-my-3 flow-root">
+    <div className="py-6 px-4 lg:px-0 border-b">
+      <h3 className="-my-3 flow-root">
         <button
           onClick={toggle}
           type="button"
@@ -30,9 +30,9 @@ export default function ExpansionList({ label, children }: Props) {
                 aria-hidden={isExpanded}
               >
                 <path
-                  fill-rule="evenodd"
+                  fillRule="evenodd"
                   d="M4 10a.75.75 0 01.75-.75h10.5a.75.75 0 010 1.5H4.75A.75.75 0 014 10z"
-                  clip-rule="evenodd"
+                  clipRule="evenodd"
                 ></path>
               </svg>
             ) : (
@@ -47,7 +47,7 @@ export default function ExpansionList({ label, children }: Props) {
             )}
           </span>
         </button>
-      </h2>
+      </h3>
 
       {isExpanded && (
         <div className="pt-6">

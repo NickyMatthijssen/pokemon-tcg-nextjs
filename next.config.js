@@ -9,13 +9,6 @@ const nextConfig = {
     ],
     formats: ["image/webp"],
   },
-  redirects: async () => [
-    {
-      source: "/",
-      destination: "/1",
-      permanent: true,
-    },
-  ],
 };
 
 module.exports = nextConfig;

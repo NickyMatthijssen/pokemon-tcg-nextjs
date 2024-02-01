@@ -4,6 +4,7 @@ import ExpansionList from "./ExpansionList";
 import api from "~/lib/api";
 import { Query } from "~/lib/interfaces";
 import Link from "next/link";
+import { FilterSubmission } from "./FilterSubmission";
 
 export default async function Filters({ query }: { query: Query }) {
   const names = ["name", "types", "subtypes", "set.id", "supertype", "rarity"];
@@ -28,7 +29,7 @@ export default async function Filters({ query }: { query: Query }) {
       params.append(name, data.getAll(name).join(","));
     }
 
-    redirect(`/1?${params.toString()}`);
+    redirect(`/?${params.toString()}`);
   }
 
   const valueInQuery = (key: string, value: string) =>
@@ -36,7 +37,9 @@ export default async function Filters({ query }: { query: Query }) {
 
   return (
     <form action={filter}>
-      <div className="border-b pb-6">
+      <div className="border-b pb-6 px-4 lg:px-0">
+        <h3 className="sr-only">Search</h3>
+
         <input
           name="name"
           type="text"
@@ -106,11 +109,13 @@ export default async function Filters({ query }: { query: Query }) {
         ))}
       </ExpansionList>
 
-      <button className="button button--full mt-6">Search</button>
+      <div className="mt-6 px-4 lg:px-0">
+        <FilterSubmission />
 
-      <Link href="/1" className="text-neutral-400 text-xs">
-        Reset filters
-      </Link>
+        <Link href="/1" className="text-neutral-400 text-xs">
+          Reset filters
+        </Link>
+      </div>
     </form>
   );
 }
