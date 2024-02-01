@@ -23,12 +23,14 @@ export function generateMetadata({ params: { page = 1 } }: Props) {
 
 export default async function Home({ params, searchParams }: Props) {
   const { page = 1 } = params;
-  const { ...q } = searchParams;
+
+  // This key helps with showing the suspense again if only the query params change.
+  const key = new URLSearchParams(searchParams).toString();
 
   const promise = api.getAllCards({
     pageSize: 12,
     page,
-    q,
+    q: searchParams,
   });
 
   return (
@@ -52,7 +54,7 @@ export default async function Home({ params, searchParams }: Props) {
             </Sidebar>
           </div>
           <div className="md:col-span-8 lg:col-span-9 xl:col-span-10">
-            <Suspense fallback={<PokemonCardGridSkeleton />}>
+            <Suspense fallback={<PokemonCardGridSkeleton />} key={key}>
               {/** @ts-ignore */}
               <PokemonCardGrid promise={promise} />
             </Suspense>

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+// @ts-ignore
 import { useFormStatus } from "react-dom";
 import { useSidebar } from "~/components/SidebarProvider";
 
@@ -12,7 +13,7 @@ export function FilterSubmission() {
     if (!pending) return;
 
     toggle(false);
-  }, [pending]);
+  }, [pending, toggle]);
 
   return <button className="button button--full">Search</button>;
 }

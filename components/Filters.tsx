@@ -29,7 +29,7 @@ export default async function Filters({ query }: { query: Query }) {
       params.append(name, data.getAll(name).join(","));
     }
 
-    redirect(`/?${params.toString()}`);
+    redirect(`/1?${params.toString()}`);
   }
 
   const valueInQuery = (key: string, value: string) =>

@@ -40,7 +40,7 @@ export function Sidebar({ title, children }: SidebarProps) {
           className="-mr-2 flex h-10 w-10 items-center justify-center rounded-md p-2 lg:hidden"
           onClick={() => toggle(false)}
         >
-          <span className="sr-only">Close menu</span>
+          <span className="sr-only">Close</span>
           <svg
             className="h-6 w-6"
             fill="none"
