@@ -5,17 +5,15 @@ import api from "~/lib/api";
 import { Query } from "~/lib/interfaces";
 import Link from "next/link";
 import { FilterSubmission } from "./FilterSubmission";
+import { Suspense } from "react";
+import ExpansionListLoader from "./ExpansionListLoader";
 
-export default async function Filters({ query }: { query: Query }) {
+export default function Filters({
+  query,
+}: {
+  query: Query;
+}): React.ReactElement {
   const names = ["name", "types", "subtypes", "set.id", "supertype", "rarity"];
-
-  const [types, subtypes, sets, rarities, supertypes] = await Promise.all([
-    api.getAllTypes(),
-    api.getAllSubtypes(),
-    api.getAllSets(),
-    api.getAllRarities(),
-    api.getAllSupertypes(),
-  ]);
 
   async function filter(data: FormData) {
     "use server";
@@ -32,9 +30,6 @@ export default async function Filters({ query }: { query: Query }) {
     redirect(`/1?${params.toString()}`);
   }
 
-  const valueInQuery = (key: string, value: string) =>
-    query[key]?.includes(value) ?? false;
-
   return (
     <form action={filter}>
       <div className="border-b pb-6 px-4 lg:px-0">
@@ -49,65 +44,57 @@ export default async function Filters({ query }: { query: Query }) {
         />
       </div>
 
-      <ExpansionList label="Types">
-        {types.map((type) => (
-          <Checkbox
-            name="types"
-            label={type}
-            value={type}
-            key={type}
-            defaultChecked={valueInQuery("types", type)}
-          />
-        ))}
-      </ExpansionList>
+      <Suspense fallback={<ExpansionListLoader label="Types" />}>
+        {/* @ts-ignore */}
+        <Options
+          name="types"
+          label="Types"
+          promise={api.getAllTypes()}
+          selected={query["types"]}
+        />
+      </Suspense>
 
-      <ExpansionList label="Subtypes">
-        {subtypes.map((subtype) => (
-          <Checkbox
-            name="subtypes"
-            label={subtype}
-            value={subtype}
-            key={subtype}
-            defaultChecked={valueInQuery("subtypes", subtype)}
-          />
-        ))}
-      </ExpansionList>
+      <Suspense fallback={<ExpansionListLoader label="Subtypes" />}>
+        {/* @ts-ignore */}
+        <Options
+          name="subtypes"
+          label="Subtypes"
+          promise={api.getAllSubtypes()}
+          selected={query["subtypes"]}
+        />
+      </Suspense>
 
-      <ExpansionList label="Supertypes">
-        {supertypes.map((type) => (
-          <Checkbox
-            name="supertype"
-            label={type}
-            value={type}
-            key={type}
-            defaultChecked={valueInQuery("supertype", type)}
-          />
-        ))}
-      </ExpansionList>
+      <Suspense fallback={<ExpansionListLoader label="Supertypes" />}>
+        {/* @ts-ignore */}
+        <Options
+          name="supertypes"
+          label="Supertypes"
+          promise={api.getAllSupertypes()}
+          selected={query["supertypes"]}
+        />
+      </Suspense>
 
-      <ExpansionList label="Rarities">
-        {rarities.map((type) => (
-          <Checkbox
-            name="rarity"
-            label={type}
-            value={type}
-            key={type}
-            defaultChecked={valueInQuery("rarity", type)}
-          />
-        ))}
-      </ExpansionList>
+      <Suspense fallback={<ExpansionListLoader label="Rarities" />}>
+        {/* @ts-ignore */}
+        <Options
+          name="rarities"
+          label="Rarities"
+          promise={api.getAllRarities()}
+          selected={query["rarities"]}
+        />
+      </Suspense>
 
-      <ExpansionList label="Sets">
-        {sets.map((set) => (
-          <Checkbox
-            name="set.id"
-            label={set.name}
-            value={set.id}
-            key={set.id}
-            defaultChecked={valueInQuery("set.id", set.id)}
-          />
-        ))}
-      </ExpansionList>
+      <Suspense fallback={<ExpansionListLoader label="Sets" />}>
+        {/* @ts-ignore */}
+        <Options
+          name="set.id"
+          label="Sets"
+          promise={api.getAllSets()}
+          selected={query["set.id"]}
+          valueGetter={(set) => set.id}
+          labelGetter={(set) => set.name}
+        />
+      </Suspense>
 
       <div className="mt-6 px-4 lg:px-0">
         <FilterSubmission />
@@ -117,5 +104,52 @@ export default async function Filters({ query }: { query: Query }) {
         </Link>
       </div>
     </form>
+  );
+}
+
+type OptionsProps<T> = {
+  name: string;
+  label: string;
+  promise: Promise<Array<T>>;
+  selected?: string[] | string;
+  valueGetter?: (value: T) => string;
+  labelGetter?: (value: T) => string;
+};
+
+async function Options<T extends unknown>({
+  name,
+  label,
+  promise,
+  selected,
+  valueGetter = (value: T) => value as string,
+  labelGetter = (value: T) => value as string,
+}: OptionsProps<T>): Promise<React.ReactElement> {
+  const options = await promise;
+
+  const valueInQuery = (value: string) => {
+    if (typeof selected === "string") {
+      selected.split(",");
+    }
+
+    return selected?.includes(value) ?? false;
+  };
+
+  return (
+    <ExpansionList label={label}>
+      {options.map((option: T) => {
+        const value = valueGetter(option);
+        const label = labelGetter(option);
+
+        return (
+          <Checkbox
+            name={name}
+            label={label}
+            value={value}
+            key={value}
+            defaultChecked={valueInQuery(value)}
+          />
+        );
+      })}
+    </ExpansionList>
   );
 }

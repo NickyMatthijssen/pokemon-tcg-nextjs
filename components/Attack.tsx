@@ -1,5 +1,4 @@
 import { IAttack } from "~/lib/interfaces";
-import Energy from "./Energy";
 import EnergyList from "./EnergyList";
 
 type Props = {

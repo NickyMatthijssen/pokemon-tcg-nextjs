@@ -1,8 +1,10 @@
 import { Suspense } from "react";
-import { Sidebar, SidebarProvider, SidebarToggle } from "~/components";
 import Filters from "~/components/Filters";
 import PokemonCardGrid from "~/components/PokemonCardGrid";
 import PokemonCardGridSkeleton from "~/components/PokemonCardGridSkeleton";
+import Sidebar from "~/components/Sidebar";
+import { SidebarProvider } from "~/components/SidebarProvider";
+import SidebarToggle from "~/components/SidebarToggle";
 import api from "~/lib/api";
 import { IParams, Query } from "~/lib/interfaces";
 
@@ -47,15 +49,12 @@ export default async function Home({ params, searchParams }: Props) {
         <div className="grid lg:grid-cols-12 gap-6">
           <div className="md:col-span-4 lg:col-span-3 xl:col-span-2">
             <Sidebar title="Filters">
-              <Suspense fallback={<div>Loading</div>}>
-                {/** @ts-ignore */}
-                <Filters query={searchParams} />
-              </Suspense>
+              <Filters query={searchParams} />
             </Sidebar>
           </div>
           <div className="md:col-span-8 lg:col-span-9 xl:col-span-10">
             <Suspense fallback={<PokemonCardGridSkeleton />} key={key}>
-              {/** @ts-ignore */}
+              {/* @ts-ignore */}
               <PokemonCardGrid promise={promise} />
             </Suspense>
           </div>

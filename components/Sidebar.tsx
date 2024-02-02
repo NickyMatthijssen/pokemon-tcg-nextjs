@@ -2,13 +2,13 @@
 
 import clsx from "clsx";
 import { useEffect } from "react";
-import { useSidebar } from ".";
+import { useSidebar } from "./SidebarProvider";
 
 type SidebarProps = React.PropsWithChildren & {
   title?: string;
 };
 
-export function Sidebar({ title, children }: SidebarProps) {
+export default function Sidebar({ title, children }: SidebarProps) {
   const { toggle, isToggled } = useSidebar();
 
   useEffect(() => {

@@ -1,8 +1,8 @@
 "use client";
 
-import { useSidebar } from ".";
+import { useSidebar } from "./SidebarProvider";
 
-export function SidebarToggle() {
+export default function SidebarToggle() {
   const { toggle } = useSidebar();
 
   return (

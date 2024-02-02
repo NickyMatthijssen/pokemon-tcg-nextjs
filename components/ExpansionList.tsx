@@ -51,10 +51,8 @@ export default function ExpansionList({ label, children }: Props) {
       </h3>
 
       <div className={clsx("pt-6", { hidden: !isExpanded })}>
-        <div className="-m-1 p-1 mr-0 space-y-4 max-h-[200px] overflow-y-scroll overflow-x-visible">
-          {React.Children.toArray(children).map((child, index) => (
-            <React.Fragment key={index}>{child}</React.Fragment>
-          ))}
+        <div className="-m-1 p-1 pl-2 mr-0 space-y-4 max-h-[200px] overflow-y-scroll overflow-x-visible">
+          {children}
         </div>
       </div>
     </div>
