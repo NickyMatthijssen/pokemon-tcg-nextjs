@@ -67,20 +67,20 @@ export default function Filters({
       <Suspense fallback={<ExpansionListLoader label="Supertypes" />}>
         {/* @ts-ignore */}
         <Options
-          name="supertypes"
+          name="supertype"
           label="Supertypes"
           promise={api.getAllSupertypes()}
-          selected={query["supertypes"]}
+          selected={query["supertype"]}
         />
       </Suspense>
 
       <Suspense fallback={<ExpansionListLoader label="Rarities" />}>
         {/* @ts-ignore */}
         <Options
-          name="rarities"
+          name="rarity"
           label="Rarities"
           promise={api.getAllRarities()}
-          selected={query["rarities"]}
+          selected={query["rarity"]}
         />
       </Suspense>
 

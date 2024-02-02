@@ -22,14 +22,41 @@ export default function Pagination({
   newParams.delete("page");
 
   const totalPages = Math.ceil(totalResources / pageSize);
-
-  const startPage = Math.max(1, currentPage - 3);
-  const endPage = Math.min(totalPages, currentPage + 3);
-
+  const limiter = 5;
   const pages = [];
 
-  for (let i = startPage; i <= endPage; i++) {
+  const startPage = Math.max(1, currentPage - 2);
+  const endPage = Math.min(totalPages, currentPage + 2);
+
+  for (
+    let i = 1;
+    i <= Math.min(currentPage < limiter ? limiter : 1, totalPages);
+    i++
+  ) {
     pages.push(i);
+  }
+
+  if (totalPages > pages.length) {
+    pages.push("...");
+
+    // Middle pages
+    if (currentPage >= limiter && currentPage <= totalPages - limiter) {
+      for (let i = startPage; i <= endPage; i++) {
+        pages.push(i);
+      }
+
+      pages.push("...");
+    }
+
+    // End pages
+    for (
+      let i =
+        totalPages - (totalPages - limiter < currentPage ? limiter - 1 : 0);
+      i <= totalPages;
+      i++
+    ) {
+      pages.push(i);
+    }
   }
 
   return (
@@ -95,11 +122,12 @@ export default function Pagination({
               </svg>
             </PaginationLink>
 
-            {pages.map((page) => (
+            {pages.map((page, index) => (
               <PaginationLink
-                key={page}
+                key={index}
                 href={`${prefix}${page}?${newParams.toString()}`}
                 active={page === currentPage}
+                disabled={page === currentPage || !Number.isInteger(page)}
               >
                 {page}
               </PaginationLink>
