@@ -38,7 +38,7 @@ function getPages(
   pages.push("...");
 
   // Middle pages
-  if (currentPage >= limiter && currentPage <= totalPages - limiter) {
+  if (currentPage >= limiter && currentPage <= totalPages - limiter + 1) {
     for (let i = startPage; i <= endPage; i++) {
       pages.push(i);
     }
@@ -47,7 +47,7 @@ function getPages(
   }
 
   let rightPages =
-    totalPages - (totalPages - limiter < currentPage ? limiter - 1 : 0);
+    totalPages - (totalPages - limiter + 1 < currentPage ? limiter - 1 : 0);
 
   for (let i = rightPages; i <= totalPages; i++) {
     if (pages.includes(i)) {
