@@ -108,7 +108,9 @@ export default function Pagination({
                 {(currentPage - 1) * pageSize + 1}
               </span>
               to
-              <span className="font-medium px-1">{currentPage * pageSize}</span>
+              <span className="font-medium px-1">
+                {Math.min(currentPage * pageSize, totalResources)}
+              </span>
               of
               <span className="font-medium px-1">{totalResources}</span>
               results
