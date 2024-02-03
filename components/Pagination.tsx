@@ -11,6 +11,61 @@ type Props = {
   prefix: string;
 };
 
+function getPages(
+  currentPage: number,
+  totalPages: number
+): Array<string | number> {
+  const pages: Array<string | number> = [];
+
+  const limiter = 5;
+
+  const startPage = Math.max(1, currentPage - 2);
+  const endPage = Math.min(totalPages, currentPage + 2);
+
+  let leftPages =
+    totalPages <= limiter + 1
+      ? totalPages
+      : Math.min(currentPage < limiter ? limiter : 1, totalPages);
+
+  for (let i = 1; i <= leftPages; i++) {
+    pages.push(i);
+  }
+
+  if (totalPages <= pages.length) {
+    return pages;
+  }
+
+  pages.push("...");
+
+  // Middle pages
+  if (currentPage >= limiter && currentPage <= totalPages - limiter) {
+    for (let i = startPage; i <= endPage; i++) {
+      pages.push(i);
+    }
+
+    pages.push("...");
+  }
+
+  let rightPages =
+    totalPages - (totalPages - limiter < currentPage ? limiter - 1 : 0);
+
+  for (let i = rightPages; i <= totalPages; i++) {
+    if (pages.includes(i)) {
+      const dots = pages.indexOf("...");
+
+      if (!!~dots) {
+        pages.splice(dots, 1);
+      }
+
+      continue;
+    }
+
+    pages.push(i);
+  }
+
+  return pages;
+}
+
 export default function Pagination({
   currentPage,
   totalResources,
@@ -22,42 +77,9 @@ export default function Pagination({
   newParams.delete("page");
 
   const totalPages = Math.ceil(totalResources / pageSize);
-  const limiter = 5;
-  const pages = [];
-
-  const startPage = Math.max(1, currentPage - 2);
   const endPage = Math.min(totalPages, currentPage + 2);
 
-  for (
-    let i = 1;
-    i <= Math.min(currentPage < limiter ? limiter : 1, totalPages);
-    i++
-  ) {
-    pages.push(i);
-  }
-
-  if (totalPages > pages.length) {
-    pages.push("...");
-
-    // Middle pages
-    if (currentPage >= limiter && currentPage <= totalPages - limiter) {
-      for (let i = startPage; i <= endPage; i++) {
-        pages.push(i);
-      }
-
-      pages.push("...");
-    }
-
-    // End pages
-    for (
-      let i =
-        totalPages - (totalPages - limiter < currentPage ? limiter - 1 : 0);
-      i <= totalPages;
-      i++
-    ) {
-      pages.push(i);
-    }
-  }
+  const pages = getPages(currentPage, totalPages);
 
   return (
     <div className="flex items-center justify-between border-t border-neutral-700 mt-4 py-3">
