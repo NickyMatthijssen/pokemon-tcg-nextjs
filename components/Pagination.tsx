@@ -1,8 +1,9 @@
 "use client";
 
+import clsx from "clsx";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { PaginationLink } from "./PaginationLink";
+import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
 
 type Props = {
   currentPage: number;
@@ -83,21 +84,22 @@ export default function Pagination({
 
   return (
     <div className="flex items-center justify-between border-t border-neutral-700 mt-4 py-3">
-      <div className="flex flex-1 justify-between sm:hidden">
-        <Link
+      <div className="flex flex-1 justify-between md:hidden">
+        <PaginationLink
           href={`${prefix}${currentPage - 1}`}
-          className="relative inline-flex items-center rounded-md border border-neutral-800 bg-indigo-800 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700"
+          disabled={currentPage <= 1}
         >
           Previous
-        </Link>
-        <Link
+        </PaginationLink>
+        <PaginationLink
           href={`${prefix}${currentPage + 1}`}
-          className="relative ml-3 inline-flex items-center rounded-md border border-neutral-800 bg-indigo-800 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700"
+          disabled={currentPage >= totalPages}
         >
           Next
-        </Link>
+        </PaginationLink>
       </div>
-      <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
+
+      <div className="hidden md:flex sm:flex-1 sm:items-center sm:justify-between">
         <div>
           {totalResources > 0 ? (
             <p className="text-sm text-white">
@@ -128,20 +130,9 @@ export default function Pagination({
               href={`${prefix}${currentPage - 1}?${newParams.toString()}`}
               disabled={currentPage === 1}
               left
+              aria-label="Previous"
             >
-              <span className="sr-only">Previous</span>
-              <svg
-                className="h-5 w-5"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-                aria-hidden="true"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M12.79 5.23a.75.75 0 01-.02 1.06L8.832 10l3.938 3.71a.75.75 0 11-1.04 1.08l-4.5-4.25a.75.75 0 010-1.08l4.5-4.25a.75.75 0 011.06.02z"
-                  clipRule="evenodd"
-                />
-              </svg>
+              <ChevronLeftIcon className="h-5 w-5" />
             </PaginationLink>
 
             {pages.map((page, index) => (
@@ -159,25 +150,53 @@ export default function Pagination({
               href={`${prefix}${currentPage + 1}?${newParams.toString()}`}
               disabled={currentPage === endPage}
               right
+              aria-label="Next"
             >
-              <span className="sr-only">Next</span>
-
-              <svg
-                className="h-5 w-5"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-                aria-hidden="true"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z"
-                  clipRule="evenodd"
-                />
-              </svg>
+              <ChevronRightIcon className="h-5 w-5" />
             </PaginationLink>
           </nav>
         </div>
       </div>
     </div>
+  );
+}
+
+type PaginationLinkProps = Omit<
+  React.ComponentProps<typeof Link>,
+  "className"
+> & {
+  active?: boolean;
+  disabled?: boolean;
+  left?: boolean;
+  right?: boolean;
+  colorClass?: string;
+};
+
+function PaginationLink({
+  children,
+  left,
+  right,
+  active,
+  disabled,
+  colorClass,
+  ...props
+}: PaginationLinkProps) {
+  return (
+    <Link
+      className={clsx(
+        "relative inline-flex items-center px-4 py-2 text-sm font-semibold text-white ring-1 ring-inset ring-neutral-800 hover:bg-indigo-800 focus:z-20 focus:outline-offset-0",
+        colorClass,
+        {
+          "pointer-events-none": active || disabled,
+          "rounded-l-md !px-2": left,
+          "rounded-r-md !px-2": right,
+          "z-10 bg-indigo-800 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-800":
+            active,
+        }
+      )}
+      {...props}
+    >
+      {children}
+    </Link>
   );
 }

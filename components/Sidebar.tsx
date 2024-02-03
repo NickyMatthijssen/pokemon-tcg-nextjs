@@ -3,6 +3,7 @@
 import clsx from "clsx";
 import { useEffect } from "react";
 import { useSidebar } from "./SidebarProvider";
+import { XMarkIcon } from "@heroicons/react/24/outline";
 
 type SidebarProps = React.PropsWithChildren & {
   title?: string;
@@ -39,22 +40,9 @@ export default function Sidebar({ title, children }: SidebarProps) {
           type="button"
           className="-mr-2 flex h-10 w-10 items-center justify-center rounded-md p-2 lg:hidden"
           onClick={() => toggle(false)}
+          aria-label="Close"
         >
-          <span className="sr-only">Close</span>
-          <svg
-            className="h-6 w-6"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth="1.5"
-            stroke="currentColor"
-            aria-hidden="true"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M6 18L18 6M6 6l12 12"
-            ></path>
-          </svg>
+          <XMarkIcon className="h-6 w-6" />
         </button>
       </div>
 
