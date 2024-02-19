@@ -8,6 +8,7 @@ const nextConfig = {
       },
     ],
     formats: ["image/webp"],
+    unoptimized: Boolean(process.env.IMAGES_UNOPTIMIZED ?? false),
   },
   async redirects() {
     return [
